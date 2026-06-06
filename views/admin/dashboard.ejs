@@ -1,0 +1,171 @@
+<%- include('../partials/header') %>
+
+<main class="container" style="padding: 20px 0;">
+    <h1>Admin Dashboard</h1>
+    <p>Manage Pixedraw projects, services, and view client messages.</p>
+
+    <!-- Navigation Tabs -->
+    <div style="display: flex; gap: 15px; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 10px;">
+        <a href="#messages" style="text-decoration: none; font-weight: bold; color: #ff5722;">Inquiries (<%= messages.length %>)</a>
+        <a href="#projects" style="text-decoration: none; font-weight: bold; color: #333;">Manage Projects (<%= projects.length %>)</a>
+        <a href="#services" style="text-decoration: none; font-weight: bold; color: #333;">Manage Services (<%= services.length %>)</a>
+    </div>
+
+    <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+      <div style="background-color: #e2f9e9; color: #1e7e34; border: 1px solid #c3e6cb; padding: 15px; margin-bottom: 20px; border-radius: 6px; font-weight: 500;">
+        <%= successMessage %>
+      </div>
+    <% } %>
+
+    <!-- CLIENT MESSAGES SECTION -->
+    <section id="messages" style="margin-bottom: 50px;">
+        <h2>Client Inquiries</h2>
+        <% if (messages && messages.length > 0) { %>
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <% messages.forEach(msg => { %>
+                    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; background-color: #fcfcfc; position: relative;">
+                        <span style="position: absolute; right: 20px; top: 20px; font-size: 0.85rem; color: #666;">
+                            <%= new Date(msg.createdAt).toLocaleString() %>
+                        </span>
+                        <h3 style="margin: 0 0 10px 0;"><%= msg.username %></h3>
+                        <p style="margin: 5px 0;"><strong>Email:</strong> <a href="mailto:<%= msg.email %>"><%= msg.email %></a></p>
+                        <p style="margin: 5px 0;"><strong>Phone:</strong> <%= msg.phone %></p>
+                        <p style="margin: 5px 0;"><strong>Service Needed:</strong> <span style="background-color: #ffe6de; color: #ff5722; padding: 2px 8px; border-radius: 4px; font-size: 0.9rem;"><%= msg.service %></span></p>
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; white-space: pre-line;">
+                            <%= msg.message %>
+                        </div>
+                        <div style="margin-top: 15px; text-align: right;">
+                            <a href="/admin/messages/delete/<%= msg._id %>" style="color: #c81e1e; font-size: 0.9rem; text-decoration: none; font-weight: bold;" onclick="return confirm('Are you sure you want to delete this message?')">Delete Inquiry</a>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <p>No client inquiries found.</p>
+        <% } %>
+    </section>
+
+    <!-- PORTFOLIO PROJECTS SECTION -->
+    <section id="projects" style="margin-bottom: 50px; border-top: 1px solid #eee; padding-top: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Portfolio Projects</h2>
+            <a href="#add-project-form" style="background-color: #ff5722; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold;">+ Add New Project</a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <% projects.forEach(project => { %>
+                <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; background: white;">
+                    <img src="<%= project.imageUrl %>" alt="<%= project.title %>" style="width: 100%; height: 180px; object-fit: cover;">
+                    <div style="padding: 15px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <h3 style="margin: 0 0 10px 0; font-size: 1.15rem;"><%= project.title %></h3>
+                        <p style="margin: 0 0 10px 0; font-size: 0.9rem; color: #666; flex-grow: 1;"><%= project.description %></p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+                            <span style="background: #eee; padding: 2px 6px; border-radius: 4px;"><%= project.category %></span>
+                            <% if (project.featured) { %>
+                                <span style="color: #28a745; font-weight: bold;">★ Featured</span>
+                            <% } %>
+                        </div>
+                        <div style="margin-top: 15px; text-align: right; border-top: 1px solid #eee; padding-top: 10px;">
+                            <a href="/admin/projects/delete/<%= project._id %>" style="color: #c81e1e; text-decoration: none; font-weight: bold; font-size: 0.9rem;" onclick="return confirm('Delete this project?')">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <!-- Add Project Form -->
+        <div id="add-project-form" style="background: #f9f9f9; padding: 30px; border-radius: 8px; border: 1px solid #e0e0e0;">
+            <h3>Add New Project</h3>
+            <form action="/admin/projects/add" method="POST">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Project Title *</label>
+                    <input type="text" name="title" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Description *</label>
+                    <input type="text" name="description" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Image File Path or URL *</label>
+                    <input type="text" name="imageUrl" placeholder="images/1000215783.jpg" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Category *</label>
+                    <select name="category" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                        <option value="Branding">Branding</option>
+                        <option value="Logo Design">Logo Design</option>
+                        <option value="Web Design">Web Design</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                        <option value="Digital Ads">Digital Ads</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="featured" name="featured" value="true">
+                    <label for="featured" style="font-weight: bold; cursor: pointer;">Feature on Home Page</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Project</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- SERVICES SECTION -->
+    <section id="services" style="margin-bottom: 50px; border-top: 1px solid #eee; padding-top: 30px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Services Offered</h2>
+            <a href="#add-service-form" style="background-color: #ff5722; color: white; padding: 8px 16px; text-decoration: none; border-radius: 4px; font-weight: bold;">+ Add New Service</a>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <% services.forEach(service => { %>
+                <div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: white;">
+                    <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px;">
+                        <img src="<%= service.imageUrl %>" alt="" style="width: 50px; height: 50px; object-fit: contain;">
+                        <h3 style="margin: 0; font-size: 1.2rem;"><%= service.title %></h3>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #666; min-height: 50px;"><%= service.description %></p>
+                    <p><strong><%= service.price %></strong></p>
+                    <% if (service.features && service.features.length > 0) { %>
+                        <ul style="padding-left: 20px; font-size: 0.85rem; color: #555;">
+                            <% service.features.forEach(f => { %>
+                                <li><%= f %></li>
+                            <% }) %>
+                        </ul>
+                    <% } %>
+                    <div style="margin-top: 15px; text-align: right; border-top: 1px solid #eee; padding-top: 10px;">
+                        <a href="/admin/services/delete/<%= service._id %>" style="color: #c81e1e; text-decoration: none; font-weight: bold; font-size: 0.9rem;" onclick="return confirm('Delete this service?')">Delete</a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <!-- Add Service Form -->
+        <div id="add-service-form" style="background: #f9f9f9; padding: 30px; border-radius: 8px; border: 1px solid #e0e0e0;">
+            <h3>Add New Service</h3>
+            <form action="/admin/services/add" method="POST">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Service Title *</label>
+                    <input type="text" name="title" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Description *</label>
+                    <textarea name="description" required rows="3" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Icon Image Path *</label>
+                    <input type="text" name="imageUrl" placeholder="images/logo.jpg" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Pricing Label *</label>
+                    <input type="text" name="price" placeholder="Starting at ₹600" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold;">Features (comma separated) *</label>
+                    <input type="text" name="features" placeholder="Feature 1, Feature 2, Feature 3" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Service</button>
+            </form>
+        </div>
+    </section>
+</main>
+
+<%- include('../partials/footer') %>

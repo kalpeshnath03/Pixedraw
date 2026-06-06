@@ -1,0 +1,62 @@
+<%- include('partials/header') %>
+
+  <main class="container">
+    <h1>Contact Pixedraw</h1>
+    <p>Get in touch with us to discuss your project. Fill out the form below and we'll get back to you soon.</p>
+    
+    <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+      <div style="background: linear-gradient(135deg, #ecfdf5, #d1fae5); color: #065f46; border: 1px solid #a7f3d0; padding: 18px 24px; margin-bottom: 24px; border-radius: 12px; font-weight: 600; font-size: 0.95rem;">
+        ✓ <%= successMessage %>
+      </div>
+    <% } %>
+
+    <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+      <div style="background: linear-gradient(135deg, #fef2f2, #fee2e2); color: #991b1b; border: 1px solid #fca5a5; padding: 18px 24px; margin-bottom: 24px; border-radius: 12px; font-weight: 600; font-size: 0.95rem;">
+        ✕ <%= errorMessage %>
+      </div>
+    <% } %>
+    
+    <form class="contact-form" method="POST" action="/contact" name="contactForm">
+      <div class="form-group">
+        <label for="username">Full Name *</label>
+        <input type="text" id="username" name="username" placeholder="John Doe" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" placeholder="john@example.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone Number *</label>
+        <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567" required>
+      </div>
+
+      <div class="form-group">
+        <label for="service">Service Needed *</label>
+        <select id="service" name="service" required>
+          <option value="">-- Select a Service --</option>
+          <option value="Logo Design">Logo Design</option>
+          <option value="Web Design">Web Design</option>
+          <option value="UI/UX Design">UI/UX Design</option>
+          <option value="Digital Marketing">Digital Marketing</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message *</label>
+        <textarea id="message" name="message" rows="6" placeholder="Tell us about your project..." required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Send Message</button>
+    </form>
+
+    <div class="contact-info" style="margin-top: 48px;">
+      <h2>Other Ways to Reach Us</h2>
+      <p><strong>Email:</strong> <a href="mailto:hello@pixedraw.com">hello@pixedraw.com</a></p>
+      <p><strong>Social Media:</strong> <a href="https://www.instagram.com/pixedraw.in?igsh=MTEzMGV4bndkamNkOQ==">Instagram</a> | <a href="https://www.facebook.com/share/1ER7jxoMGy/">Facebook</a> | <a href="#">LinkedIn</a></p>
+    </div>
+  </main>
+
+<%- include('partials/footer') %>

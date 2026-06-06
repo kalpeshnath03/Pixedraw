@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+
+  <main class="container">
+    <h1>Services</h1>
+    <p>At Pixedraw, we offer professional design services tailored to your brand's unique needs.</p>
+    
+    <section class="services-detailed">
+      <% if (services && services.length > 0) { %>
+        <% services.forEach(service => { %>
+          <div class="service-item">
+            <h2><%= service.title %></h2>
+            <p><%= service.description %></p>
+            <% if (service.features && service.features.length > 0) { %>
+              <ul>
+                <% service.features.forEach(feature => { %>
+                  <li><%= feature %></li>
+                <% }) %>
+              </ul>
+            <% } %>
+            <p class="price"><strong><%= service.price %></strong></p>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p>No services available at the moment.</p>
+      <% } %>
+    </section>
+  </main>
+
+  <section class="cta">
+    <h2>Ready to get started?</h2>
+    <p>Let's collaborate to build something amazing for your brand.</p>
+    <a class="btn btn-primary" href="/contact">Contact Pixedraw</a>
+  </section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,119 @@
+<%- include('partials/header') %>
+
+    <main>
+        <section class="hero">
+            <div class="hero-layout">
+                <div class="hero-copy">
+                    <span class="eyebrow">Creative design studio</span>
+                    <h1>Crafting Digital Excellence</h1>
+                    <p class="lead">Professional graphic design solutions for brands, startups, and creatives. From logos to marketing visuals, we make ideas look powerful.</p>
+                    <div class="hero-cta">
+                        <a class="btn btn-primary" href="/portfolio">View Portfolio</a>
+                        <a class="btn btn-secondary" href="/contact">Get a Quote</a>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <strong>50+</strong>
+                            <span>Projects</span>
+                        </div>
+                        <div class="stat-card">
+                            <strong>20+</strong>
+                            <span>Clients</span>
+                        </div>
+                        <div class="stat-card">
+                            <strong>4</strong>
+                            <span>Core Services</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-panel">
+                    <div class="hero-panel-card">
+                        <h2>Brand, web, and marketing</h2>
+                        <p>Simple, modern, and bold visuals designed to help your business stand out.</p>
+                        <div class="hero-tags">
+                            <span>Logo</span>
+                            <span>Web Design</span>
+                            <span>UI/UX</span>
+                            <span>Digital Ads</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="highlights">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="eyebrow">Why choose us</span>
+                    <h2>Design that feels clean, sharp, and professional</h2>
+                </div>
+                <div class="highlights-grid">
+                    <article class="highlight-card">
+                        <h3>Clear Branding</h3>
+                        <p>We keep your message consistent across logo, website, and social media.</p>
+                    </article>
+                    <article class="highlight-card">
+                        <h3>Modern UI</h3>
+                        <p>Balanced layouts, smooth spacing, and strong contrast for better readability.</p>
+                    </article>
+                    <article class="highlight-card">
+                        <h3>Fast Delivery</h3>
+                        <p>Focused design process with quick revisions and practical solutions.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="eyebrow">Featured work</span>
+                    <h2>Recent projects</h2>
+                </div>
+                <div class="grid">
+                    <% if (projects && projects.length > 0) { %>
+                        <% projects.forEach(project => { %>
+                            <article class="card">
+                                <img src="<%= project.imageUrl %>" alt="<%= project.title %>">
+                                <h3><%= project.title %></h3>
+                                <p><%= project.description %></p>
+                            </article>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="center">No projects found. Please seed the database.</p>
+                    <% } %>
+                </div>
+                <p class="center"><a href="/portfolio" class="link">View full portfolio</a></p>
+            </div>
+        </section>
+
+        <section class="services">
+            <div class="container">
+                <div class="section-heading">
+                    <span class="eyebrow">Services</span>
+                    <h2>What we can do for you</h2>
+                </div>
+                <div class="services-grid">
+                    <% if (services && services.length > 0) { %>
+                        <% services.forEach(service => { %>
+                            <div class="service-card">
+                                <img src="<%= service.imageUrl %>" alt="<%= service.title %> icon">
+                                <h3><%= service.title %></h3>
+                                <p><%= service.description %> <%= service.price %>.</p>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p class="center">No services found. Please seed the database.</p>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <h2>Ready to bring your ideas to life?</h2>
+            <p>Let's build a sharper brand, cleaner website, and stronger online presence.</p>
+            <a class="btn btn-primary" href="/contact">Contact Pixedraw</a>
+        </section>
+    </main>
+
+<%- include('partials/footer') %>
