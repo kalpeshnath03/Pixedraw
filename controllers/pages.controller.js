@@ -1,14 +1,19 @@
 import Project from "../models/Project.js";
 import Service from "../models/Service.js";
 
-
 export const getHome = async (req, res) => {
   try {
+    const projects = await Project.find({ featured: true }).limit(3);
+    const services = await Service.find().limit(4);
+
+    console.log("Projects:", projects.length);
+    console.log("Services:", services.length);
+
     res.render("index", {
       title: "Crafting Digital Excellence",
       page: "home",
-      projects: [],
-      services: []
+      projects,
+      services
     });
   } catch (error) {
     console.error("Home controller error:", error);
@@ -18,10 +23,12 @@ export const getHome = async (req, res) => {
 
 export const getPortfolio = async (req, res) => {
   try {
+    const projects = await Project.find();
+
     res.render("portfolio", {
       title: "Portfolio",
       page: "portfolio",
-      projects: []
+      projects
     });
   } catch (error) {
     console.error("Portfolio controller error:", error);
@@ -31,10 +38,12 @@ export const getPortfolio = async (req, res) => {
 
 export const getServices = async (req, res) => {
   try {
+    const services = await Service.find();
+
     res.render("services", {
       title: "Services",
       page: "services",
-      services: []
+      services
     });
   } catch (error) {
     console.error("Services controller error:", error);
