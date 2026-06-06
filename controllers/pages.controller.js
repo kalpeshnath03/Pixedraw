@@ -1,3 +1,7 @@
+import Project from "../models/Project.js";
+import Service from "../models/Service.js";
+
+
 export const getHome = async (req, res) => {
   try {
     res.render("index", {
